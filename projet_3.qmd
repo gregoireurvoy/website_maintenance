@@ -1,0 +1,15 @@
+---
+format:
+  html:
+    toc: true
+    toc-location: left
+---
+
+# House prices predictions using machine learning models
+
+
+The goal of this project was to build several models of varying complexity that can predict house prices. Then, we compare the results.
+
+The dataset contains about 3000 observations (i.e. houses) and 82 attributes. We use the first 2500 observations to fit our models and estimate prices for the 500 others.
+
+{{< embed "C:/Users/grego/Documents/ML/Course_3/09_Course_project/House_prices_prediction.ipynb" echo=true >}}

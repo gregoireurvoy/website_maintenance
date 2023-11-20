@@ -1,0 +1,488 @@
+---
+editor: visual
+execute:
+  echo: false
+  message: false
+  warning: false
+  code-fold: true
+format: 
+  html:
+    grid:
+      body-width: 900px
+    toc: FALSE
+---
+<style>
+    .intro_1 {
+    margin: 0px -250px 0px -50px;
+    }
+    
+     .intro_2 {
+    margin: 0px -50px 0px -250px;
+    }
+    
+    .intro {
+    text-align:justify;
+}
+
+</style>
+
+<img class="intro_1" src="images/logo.jpg" align="left" height="200" width="auto"/> 
+<img class="intro_2" src="images/logo.jpg" style="transform: rotatey(180deg)" align="right" height="200" width="auto"/>
+
+<p style="text-align:center; font-size:72px; color:#432060">Premier league</p>
+
+<p style="text-align:center; font-size:40px; color:#432060">Simply the best</p>
+<br> <br>
+
+<div class="intro">
+
+Envision a grand football spectacle known as the Premier League -- a distinguished gathering of 20 premier teams, akin to formidable titans engaged in epic on-field duels. Its inaugural chapter unfolded in 1992, swiftly evolving into a global phenomenon that commands fervent admiration. The stadiums, hallowed grounds of sporting prowess, echo with the cacophony of ardent fans, while the players, drawn from diverse corners of the globe, infuse the league with an international flair. Beyond mere competition, this is a vibrant tapestry where each goal and remarkable save etches a compelling narrative into the annals of footballing history. Join this transcendent odyssey into the heart of the Premier League, where the beautiful game metamorphoses into a canvas upon which legends are painted. Simply the best.
+
+</div>
+
+<p style="text-align:left; font-size:40px; color:#432060">Current Table</p>
+
+```{r}
+library(tidyverse)
+library(ggiraph)
+library(sf)
+library(cowplot)
+library(ggimage)
+library(patchwork)
+library(gdtools)
+library(treemap)
+library(d3treeR)
+library(rvest)
+library(kableExtra)
+library(officer)
+library(htmltools)
+```
+
+```{r}
+url <- "https://www.skysports.com/premier-league-table"
+
+dataset_ranking <- url %>% read_html() %>%
+  html_nodes(css = 'table') %>% html_table()
+
+dataset_ranking <- data.frame(dataset_ranking) %>% select(-Last.6) %>% rename( Rank = X.)
+
+flag <- data.frame(flag = c("images/1.png","images/2.png","images/3.png","images/4.png","images/5.png","images/6.png","images/7.png","images/8.png","images/9.png","images/10.png","images/11.png","images/12.png","images/13.png","images/14.png","images/15.png","images/16.png","images/17.png","images/18.png","images/19.png","images/20.png"), Team = c( "Manchester City", "Liverpool", "Arsenal", "Tottenham Hotspur","Aston Villa",             
+"Manchester United","Newcastle United",  "Brighton and Hove Albion", "West Ham United", "Chelsea",                 
+"Brentford","Wolverhampton Wanderers",  "Crystal Palace", "Nottingham Forest","Fulham",                  
+"Bournemouth" , "Luton Town", "Sheffield United", "Everton *","Burnley"))
+
+dataset_ranking <- dataset_ranking %>% full_join(flag, by = "Team")
+```
+
+
+```{r }
+dataset_ranking$flag <- paste0(sprintf("![](%s)", dataset_ranking$flag),"{width=60%}")
+
+dataset_ranking <- dataset_ranking %>% relocate(Rank)
+dataset_ranking <- dataset_ranking %>% relocate(flag, .after = Rank)
+```
+
+```{r }
+colnames(dataset_ranking) <- c("Rank", " ", "Team", "Pl",   "W",    "D",    "L",    "F",    "A",    "GD",   "Pts") 
+```
+
+```{r , echo=F, results="asis"}
+print(kable(dataset_ranking, format="html") %>% 
+          kable_styling(full_width=FALSE) %>% 
+          collapse_rows(columns=1, valign="top")   %>%
+          kable_material(c("striped", "hover")))
+```
+
+<br>
+
+<p style="text-align:left; font-size:40px; color:#432060">Season 2023-2024</p>
+
+```{r}
+uk <- read_sf("data/NUTS1_Jan_2018_UGCB_in_the_UK.shp")
+uk$images <- '<img src="https://i.ibb.co/YDNqZ6R/ch-map.png" alt="ch-map" border="0" />'
+
+
+uk$clubs <- c(HTML("<b>Newcastle United F.C.</b> <br> Founded: <i> 1892</i> <br> 	<i> St James' Park (52'405)</i> +"),
+              HTML("<b>Manchester City</b> <br> Founded: <i> 1894</i> <br>  	<i> 	Etihad Stadium (55'097)</i> <br> <br>
+                   <b>Manchester United</b> <br> Founded: <i> 1878 </i> <br>  	<i> 	Old Trafford (74'310)</i> <br> <br>
+                   <b>Liverpool</b> <br> Founded: <i> 1892</i> <br>  	<i>Anfield (61'000)</i> <br> <br>
+                   <b>Everton</b> <br> Founded: <i>1878 </i> <br>  	<i>Goodison Park (39'414)</i> <br> <br>
+                   <b>Burnley</b> <br> Founded: <i> 1882</i> <br>  	<i>Turf Moor (21'401)</i>"), 
+              HTML("<b>Sheffield United</b> <br> Founded: <i>1889 </i> <br>  	<i>Bramall Lane (32'050)</i> "), 	
+              HTML("<b>Nottingham Forest</b> <br> Founded: <i> 1865</i> <br>  	<i>City Ground (30'602)</i>"),
+              HTML("<b>Aston Villa</b> <br> Founded: <i>1874 </i> <br>  	<i> Villa Park (42'788)</i> <br> <br>
+                   <b>Wolverhampton Wanderers</b> <br> Founded: <i>1877 </i> <br>  	<i>Molineux Stadium (32'050)</i>"), 
+              HTML("<b>Luton Town</b> <br> Founded: <i> 1885</i> <br>  	<i> Kenilworth Road (10'356)</i>")	  , 
+              HTML("<b>Arsenal</b> <br> Founded: <i> 1886</i> <br>  	<i> Emirates Stadium (60'704)</i> <br> <br>
+                   <b>Chealsea</b> <br> Founded: <i> 1905</i> <br>  	<i>Stamford Bridge (40'341)</i> <br> <br>
+                   <b>Tottenham Hotspur</b> <br> Founded: <i>1882 </i> <br>  	<i> Tottenham Hotspur Stadium (62'850)</i> <br>  <br>
+                   <b>West Ham United</b> <br> Founded: <i> 1895</i> <br>  	<i> London Stadium (62'500)</i>  <br> <br>
+                   <b>Fulham</b> <br> Founded: <i> 1879</i> <br>  	<i>Craven Cottage (24'500)</i> <br> <br>
+                   <b>Crystal Palace</b> <br> Founded: <i>1861 </i> <br>  	<i>Selhurst Park (26'309)</i> <br> <br>
+                   <b>Brentford</b> <br> Founded: <i>1889 </i> <br>  	<i> Gtech Community Stadium (17'250)</i>"),
+              HTML( "<b>Brighton and Hove Albion</b> <br> Founded: <i>1901 </i> <br>  	<i> Falmer Stadium (31'800)</i>"), 
+              HTML("<b>Bournemouth</b> <br> Founded: <i>1899 </i> <br>  	<i>Dean Court (11'307)</i>"),
+              HTML("<b>No Premier League club</b>" )    , 
+              HTML("<b>No Premier League club</b>") ,
+              HTML("<b>No Premier League club</b>"))     
+
+
+gg_map_2 <- ggplot(uk) +
+  aes(data_id = nuts118nm, tooltip = clubs) +
+  geom_sf_interactive(fill = "#E8F4EB") +
+  scale_fill_viridis_c_interactive() + 
+  theme_void()
+```
+
+```{r}
+girafe(ggobj = plot_grid(gg_map_2,NULL, ncol=2, rel_widths = c(4, 2)), 
+       width_svg = 10, height_svg = 6) %>%
+  girafe_options(
+        opts_tooltip(offx = 150, offy = 50, css= "border:1px solid #E8F4EB;"),
+        opts_hover(css = "fill:#432060;"),
+        opts_hover_inv(css = "fill:#CFCFCF;opacity:0.4" ),
+        opts_tooltip(css = "background:#FEFBFF;opacity:0.4;text-align:center;font-size:17px"))
+```
+
+<br>
+<p style="text-align:left; font-size:40px; color:#432060">All for the show!</p>
+
+```{r}
+
+data_uefa <- data.frame(competition = c("Bundesliga","Premier League","Ligue 1","Serie A","La Liga"), goals=c(3.17,2.85,2.81,2.56,2.52), coef=c(73624,93178,56331,75855,79614), reds=c(0.14,0.08,0.26,0.18,0.37), attendance = c(13155894, 14960957,9049197, 11196503, 11236873 )  )
+
+data_uefa$competition <- factor(data_uefa$competition, levels = rev(c("Bundesliga", "Premier League", "Ligue 1","Serie A" ,"La Liga" )))
+
+p1 <- ggplot(data_uefa) +
+  geom_col_interactive(aes(x = goals, y = competition, data_id = competition, fill = competition), width = 0.6) + 
+  scale_fill_manual( values = c("Premier League" = "#432060"), na.value = "grey80", guide = "none")+
+  theme_minimal() + 
+  labs(title = "Average Goals per game 22-23",
+       x="",
+       y="")+
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_blank())
+
+data_uefa$competition <- factor(data_uefa$competition, levels = rev(c("Premier League", "Bundesliga", "Serie A" ,"Ligue 1", "La Liga" )))
+p2 <- ggplot(data_uefa) +
+  geom_col_interactive(aes(x = reds, y = competition, data_id = competition, fill = competition), width = 0.6) + 
+    scale_fill_manual( values = c("Premier League" = "#432060"), na.value = "grey80",guide = "none")+
+  theme_minimal() + 
+  labs(title = "Average red cards per game 22-23",
+       y="",
+       x="")+
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_blank())
+
+data_uefa$competition <- factor(data_uefa$competition, levels = rev(c("Premier League", "La Liga", "Serie A" ,"Bundesliga", "Ligue 1")))
+p3 <-ggplot(data_uefa) +
+  geom_col_interactive(aes(x = coef, y = competition, data_id = competition, fill = competition), width = 0.6) + 
+    scale_fill_manual( values = c("Premier League" = "#432060"), na.value = "grey80", guide = "none")+
+  theme_minimal() + 
+  labs(title = "UEFA Country coefficients (11.2023)",
+       y="",
+       x="") +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_blank())
+
+data_uefa$competition <- factor(data_uefa$competition, levels = rev(c("Premier League", "Bundesliga", "La Liga", "Serie A" ,"Ligue 1")))
+p4 <-ggplot(data_uefa) +
+  geom_col_interactive(aes(x = attendance, y = competition , data_id = competition, fill = competition), width = 0.6) + 
+    scale_fill_manual( values = c("Premier League" = "#432060"), na.value = "grey80", guide = "none")+
+  scale_x_continuous(breaks = c(0,5000000 ,10000000,15000000 ),labels = c("0", "5M", "10M" ,"15M")) +
+  theme_minimal() + 
+  labs(title = "Total attendance 22-23",
+       y="",
+       x="") +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_blank())
+
+girafe(code = print((p1 + p2) / (p3 + p4)), width_svg = 9, height_svg = 4,
+       options = list(opts_hover(css="fill:#432060"),
+                      opts_hover_inv(css="fill:#CFCFCF;opacity:0.4")),
+       fonts = list(sans = "Helvetica"))
+
+```
+
+
+<p style="text-align:left; font-size:40px; color:#432060">Always more money</p>
+
+```{r}
+dataset_right <- data.frame(date = rep(c("92-97","97-01","01-04","04-07","07-10","10-13", "13-16", "16-19","19-22","22-25"),2),
+                            money = c(214,743,1380,1130,1880,1950,3200,5340,5010,5000,40,98,178,325,625,1440,2230,3100,4000,5050),
+                            type = c(rep("UK rights",10), rep("Overseas rights",10)))
+
+dataset_right$date <- factor(dataset_right$date, levels = unique(dataset_right$date))
+  
+p5 <- ggplot(dataset_right) +
+  geom_col_interactive(aes(x= date, y = money, fill = type, data_id = type, tooltip = money)) + 
+  scale_fill_manual( values = c("#D5C0D8","#83588A")) +
+  ylim(c(0,11000))+
+  theme_minimal(base_family = "sans") + 
+  geom_text_interactive(aes(x= date, y = money,  label = after_stat(y), group = date), stat = 'summary', fun = sum, vjust = -1) +
+  labs(title = "Evolution of Premier League TV rights (in £ million) ",
+       y="£ Million",
+       x="",
+       fill = "") +
+  theme(panel.grid.minor.x = element_blank(),
+        panel.grid.major.x = element_blank(),
+        legend.position="top")
+
+girafe(ggobj = plot_grid(NULL, p5,NULL, ncol=3, rel_widths = c(1, 4, 1)), 
+       width_svg = 10, height_svg = 6, options = list(opts_hover(css="fill:#432060"),
+                      opts_hover_inv(css="fill:#CFCFCF;opacity:0.4")))
+
+
+```
+
+<br>
+
+```{r}
+dataset_club <- read_csv("data/value_club.csv") 
+```
+
+```{r, include = FALSE}
+dataset_club$league <- factor(dataset_club$league, levels = c("Premier League","La Liga", "Bundesliga" ,"Ligue 1","Serie A","MLS"))
+
+inter <- d3tree2( treemap(dataset_club,
+            index=c("league","team"),
+            vSize="value",
+            type="index",
+            palette = c("#432060", rep("#FFFFFF",5)),
+            bg.labels=c("white"),
+            align.labels=list(
+              c("center", "center"), 
+              c("left", "top")
+            )  
+          )  
+ ,  rootname = "All", )
+ 
+```
+### Club value in US$ million by league in 2023
+```{r}
+inter
+```
+<br>
+
+
+<p style="text-align:left; font-size:40px; color:#432060">A Few Iconic Players</p>
+<br>
+
+<style>
+    .player {
+      border-radius: 50%; 
+      border: 3px solid #432060; 
+      width: 200px; 
+      height: 200px; 
+      object-fit: cover;
+    }
+    
+    .logo {
+      width: 20px; 
+      height: 20px; 
+      object-fit: cover;
+    }
+</style>
+<a href="https://www.youtube.com/watch?v=vQxu1_FoHL4&ab_channel=PremierLeague" target="_blank">
+<img class="player" align="left" src="https://resources.premierleague.com/premierleague/photos/players/250x250/p13017.png" alt="Encircled Image"></a>
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:28px; color:#432060">Wayne <b>ROONEY</b></div>
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:17px">
+England <img  class = "logo" src="https://resources.premierleague.com/premierleague/flags/GB-ENG.png">, Everton <img  class = "logo" src="https://resources.premierleague.com/premierleague/badges/50/t11.png">, Manchester United <img  class = "logo" src="https://resources.premierleague.com/premierleague/badges/50/t1.png">
+<br> Appareances: 491
+<br> Goals: 208
+<br> Assists: 103
+<br> 5 x Premier League champions
+<br> 1 x Player of the season
+</div>
+
+<br> 
+
+<a href="https://www.youtube.com/watch?v=K-u0gOjKS4g&ab_channel=PremierLeague" target="_blank">
+<img class="player" align="right" src="https://resources.premierleague.com/premierleague/photos/players/250x250/p1814.png" alt="Encircled Image"></a>
+<div style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:28px; color:#432060">Steven <b>GERRARD</b></div>
+<div style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:17px">
+England <img  class = "logo" src="https://resources.premierleague.com/premierleague/flags/GB-ENG.png">, Liverpool <img  class = "logo" src="https://resources.premierleague.com/premierleague/badges/50/t14.png">
+<br> Appareances: 504
+<br> Goals: 120
+<br> Assists: 92
+<br> Liverpool legend
+<br> 8 x Premier League Team of the year
+</div>
+
+<br> 
+
+<a href="https://www.youtube.com/watch?v=rZphx3ofoWQ&ab_channel=ManchesterUtd" target="_blank">
+<img class="player" align="left" src="https://resources.premierleague.com/premierleague/photos/players/250x250/p3.png" alt="Encircled Image"></a>
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:28px; color:#432060">Ryan <b>GIGGS</b></div>
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:17px">
+Wales <img  class = "logo" src="https://resources.premierleague.com/premierleague/flags/GB-WLS.png">, Manchester United <img  class = "logo" src="https://resources.premierleague.com/premierleague/badges/50/t1.png">
+<br> Appareances: 632
+<br> Goals: 109
+<br> Assists: 162
+<br> 13 x Premier League Champion
+<br> Most appareances for a Manchester United player
+</div>
+
+<br> 
+
+<a href="https://www.youtube.com/watch?v=MIc-ogQYJ6Q&ab_channel=PremierLeague" target="_blank">
+<img class="player" align="right" src="https://resources.premierleague.com/premierleague/photos/players/250x250/p1.png" alt="Encircled Image"></a>
+<div style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:28px; color:#432060">Alan <b>SHEARER</b></div>
+<div style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:17px">
+England <img  class = "logo" src="https://resources.premierleague.com/premierleague/flags/GB-ENG.png">, Blackburn Rovers <img  class = "logo" src="https://resources.premierleague.com/premierleague/badges/50/t5.png">, Newcastle United <img  class = "logo" src="https://resources.premierleague.com/premierleague/badges/50/t4.png">
+<br> Appareances: 441
+<br> Goals: 260
+<br> 3 x Golden boot
+<br> 1 x Premier League champions
+<br> Premier League's All time record goalscorer
+</div>
+
+<br>
+
+<a href="https://www.youtube.com/watch?v=pP8r4yDPnyE&ab_channel=PremierLeague" target="_blank">
+<img class="player" align="left" src="https://resources.premierleague.com/premierleague/photos/players/250x250/p223094.png" alt="Encircled Image"></a>
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:28px; color:#432060">Erlind <b>HAALAND</b></div>
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:17px">
+Norway <img  class = "logo" src="https://resources.premierleague.com/premierleague/flags/NO.png">, Manchester city <img  class = "logo" src="https://resources.premierleague.com/premierleague/badges/50/t43.png">
+<br> Appareances: 47
+<br> Goals: 49
+<br> Season 22-23: Premier League Champion, Young Player of the Season, Player of the Season, Golden Boot
+<br> Most goals scored by a player in a single season
+</div>
+
+<br> 
+
+<p style="text-align:left; font-size:40px; color:#432060">Fun facts about the Premier League</p>
+
+<style>
+    .big-number_1 {
+      font-weight: bold;
+      float: left;
+      margin-right: 20px; 
+      margin-top: -20px;
+    }
+    
+    .big-number_2 {
+      font-weight: bold;
+      float: right;
+      margin-left: 20px; 
+      margin-top: -30px;
+    }
+
+</style>
+
+<span class="big-number_1" style="font-size:72px; color:#432060; font-family: Garamond, serif">38 </span><div style="text-align:left">The Invincibles refers to the 2003-2004 Arsenal football team, that went unbeaten throughout the entire Premier League season, a remarkable achievement in modern English football history. They secured the league title with 26 wins and 12 draws, remaining undefeated in all <b>38 matches</b>.</div>
+
+<br> 
+
+<span class="big-number_2" style="font-size:72px; color:#432060; font-family: Garamond, serif">6 </span><div style="text-align:right">Arsenal, Chelsea, Everton, Liverpool, Manchester United, and Tottenham Hotspur are the indomitable <b>six</b>, steadfast against the specter of relegation in the rich history of the Premier League.</div>
+
+<br> 
+
+<span class="big-number_1" style="font-size:72px; color:#432060; font-family: Garamond, serif">90+ </span><div style="text-align:left"> We say 'Fergie time' in reference to Sir Alex Ferguson, the legendary manager of Manchester United, because his teams were known for scoring crucial goals during <b>added time</b>, leading to dramatic late victories, creating a perception that the match clock was extended in their favor.</div>
+
+<br> 
+
+<span class="big-number_2" style="font-size:72px; color:#432060; font-family: Garamond, serif">11</span><div style="text-align:right">While being the all-time top scorer of the Premier League, Alan Shearer has also the most missed penalties in the league (<b>11</b>).</div>
+
+<br> 
+
+<p style="text-align:left; font-size:40px; color:#432060">A Few Iconic Managers</p>
+
+<br> 
+
+<img class="player" align="left" src="https://resources.premierleague.com/premierleague/photos/players/250x250/man58.png" alt="Encircled Image">
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:28px; color:#432060">Sir Alex <b>FERGUSON</b></div>
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:17px">
+Scotland <img  class = "logo" src="https://resources.premierleague.com/premierleague/flags/GB-SCT.png">, Manchester United <img  class = "logo" src="https://resources.premierleague.com/premierleague/badges/50/t1.png">
+<br> Matchs: 810
+<br> Wins: 528 (65%)
+<br> 27 x Manager of the months
+<br> 13 x Premier League champions
+<br> 11 x Manager of the season
+</div>
+
+<br> 
+
+<img class="player" align="right" src="https://resources.premierleague.com/premierleague/photos/players/250x250/man134.png" alt="Encircled Image">
+<div style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:28px; color:#432060">Jose <b>MOURINHO</b></div>
+<div style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:17px">
+Portugal <img  class = "logo" src="https://resources.premierleague.com/premierleague/flags/PT.png">, Chelsea <img  class = "logo" src="https://resources.premierleague.com/premierleague/badges/50/t11.png">, Manchester United <img  class = "logo" src="https://resources.premierleague.com/premierleague/badges/50/t1.png">, Tottenham Hotspur <img  class = "logo" src="https://resources.premierleague.com/premierleague/badges/50/t6.png">
+<br> Matchs: 363
+<br> Wins: 217 (60%)
+<br> Goals for: 625 (1.7 per game)
+<br> 3 x Premier League champions
+<br> 3 x Manager of the season
+</div>
+
+<br> 
+
+<img class="player" align="left" src="https://resources.premierleague.com/premierleague/photos/players/250x250/man51.png" alt="Encircled Image">
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:28px; color:#432060">Arsene <b>WENGER</b></div>
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:17px">
+France <img  class = "logo" src="https://resources.premierleague.com/premierleague/flags/FR.png">, Arsenal <img  class = "logo" src="https://resources.premierleague.com/premierleague/badges/20/t3.png">
+<br> Matchs: 828 (record)
+<br> Wins: 476 (57%)
+<br> Goals for: 1561 (1.9 per game)
+<br> 3 x Premier League champions
+<br> 3 x Manager of the season
+</div>
+
+<br> 
+
+<img class="player" align="right" src="https://resources.premierleague.com/premierleague/photos/players/250x250/man37974.png" alt="Encircled Image">
+<div style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:28px; color:#432060">Pep <b>GUARDIOLA</b></div>
+<div style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:17px">
+Spain <img  class = "logo" src="https://resources.premierleague.com/premierleague/flags/ES.png">, Manchester City <img  class = "logo" src="https://resources.premierleague.com/premierleague/badges/20/t43.png">
+<br> Matchs: 278
+<br> Wins: 206 (74%)
+<br> Average possession percentage: 68%
+<br> 5 x Premier League champions
+<br> 4 x Manager of the season
+</div>
+
+
+<p style="text-align:left; font-size:40px; color:#432060">My Premier League XI</p>
+
+<br>
+
+```{r}
+# add interactive raster annotation to a ggplot -------
+
+# Generate data
+
+dataset <- data.frame(position_x = c(2.5,1,2,3,4,1.5,2.5,3.5,1.5,2.5,3.5), position_y = c(0.3,1,1,1,1,2,1.9,2,3,3.2,3), pic = c("images/cech.png","images/cole.png","images/van.png","images/ferdinand.png","images/arnold.png","images/lampard.png","images/kante.png","images/debruyne.png","images/ronaldo.png","images/kane.png","images/henry.png"), legend = c("Petr Čech", "Ashley Cole", "Virgil van Dijk", "Rio Ferdinand", "Trent Alexander-Arnold", "Frank Lampard", "N'Golo Kanté", "Kevin De Bruyne", "Cristiano Ronaldo", "Harry Kane", "Thierry Henry"))
+
+p <- ggplot(dataset, aes(position_x, position_y)) +
+  geom_point() +
+  geom_image( aes(image = pic), size= 0.16) +
+  xlim(c(0.7,4.3)) +
+  ylim(c(0.2,3.4))+
+  geom_point_interactive( alpha= 0, size = 20, aes(tooltip = legend)) + 
+  theme_void() +
+  theme(panel.background = element_rect(color= "grey", fill ="#FEFBFF"))
+
+girafe(ggobj = plot_grid(NULL, p,NULL, ncol=3, rel_widths = c(1, 3, 1)), 
+       width_svg = 10, height_svg = 6,
+       options = list(opts_tooltip( css="background:#FEFBFF")))
+
+
+```
+
+<br>
+<br> 
+<br>
+
+<p style="text-align:center; font-size:46px; color:#432060; font-family:Serif
+"><i>"Everybody wants the Hollywood glamour of the Premier League."</i></p>
+
+<p style="text-align:center; font-size:30px; color:#432060"; font-family:Serif><i>Ole Gunnar Solskjaer </i></p>
+
+<br>
+<br>
+---
+
+https://www.premierleague.com/home <br>
+https://fbref.com/ <br>
+https://theathletic.com/4240951/2023/08/25/premier-league-tv-rights-how-work-cost/ <br>
+https://www.forbes.com/lists/soccer-valuations/?sh=14a8e816198b  <br>

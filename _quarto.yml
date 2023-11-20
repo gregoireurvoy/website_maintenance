@@ -1,0 +1,58 @@
+project:
+  type: website
+
+website:
+  page-footer: "Copyright 2023, Grégoire Urvoy"
+
+  
+  title: "Gregoire Urvoy"
+  navbar:
+    right:
+      - text: "Home page"
+        href: home.qmd
+      - text: "Visualizations"
+        menu:
+          - text: "Visualization using Tableau"
+            href: visualization_using_Tableau.qmd
+          - text: "Visualization using R"
+            href: visualization_using_R.qmd
+      - text: "Academic project"
+        menu:
+          - text: "Analysis of ESG factors in investment decisionmaking (2019)" 
+            href: projet_1.qmd
+          - text: "Estimating market capitalisation of companies using machine learning models (2021)"
+            href: projet_2.qmd
+          - text: "House prices predictions using machine learning models (2021)"
+            href: projet_3.qmd
+          - text: "Images classifier using deep learning and machine learning models (2021)"
+            href: projet_5.qmd
+          - text: "Open food facts dataset: simple analysis (2021)"
+            href: projet_4.qmd
+      - text: "Work project"
+        menu:
+          - text: "Proposal for a Maturity Continuum Model for Open Research Data (2019)" 
+            href: w_projet_1.qmd
+          - text: "Performance analysis of marathon runners using Strava data (in progress)"
+            href: w_projet_2.qmd
+      - text: "Football stories"
+        menu:
+          - text: "Premier league - Simply the best" 
+            href: premiere_league.qmd
+          - text: "Manchester - Blue or Red? (in progress)"
+            href: manchester.qmd
+        
+      - text: "Tutorials"
+        menu: 
+          - text: "How to animate your plots with R? (in progress)"
+            href: t_animated.qmd
+      - icon: linkedin
+        href: https://www.linkedin.com/in/gr%C3%A9goire-urvoy-456347a8/
+        aria-label: linkedin
+
+format:
+  html:
+    theme: flaty
+    css: styles.css
+    toc: true
+
+

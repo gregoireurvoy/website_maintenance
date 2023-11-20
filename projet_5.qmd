@@ -1,0 +1,30 @@
+---
+format:
+  html:
+    toc: true
+    toc-location: left
+---
+
+# Images classifier using deep learning and machine learning models
+
+The goal of this project was to build different images classifier. I worked with the Swissroads data set which contains thousands images of vehicles found including cars, trucks, vans, bikes, motorcycles and others.
+
+The ultimate goal is to test different classifiers and techniques and choose the best method.
+
+{{< embed C:/Users/grego/Documents/ML/Course_4/01_Feature_extraction.ipynb echo=true >}}
+
+{{< embed C:/Users/grego/Documents/ML/Course_4/02_Data_exploration.ipynb echo=true >}}
+
+{{< embed "C:/Users/grego/Documents/ML/Course_4/03 Visual search with k-NN.ipynb" echo=true >}}
+
+{{< embed "C:/Users/grego/Documents/ML/Course_4/04 Simple decision tree.ipynb" echo=true >}}
+
+{{< embed "C:/Users/grego/Documents/ML/Course_4/05 Logistic regression baseline.ipynb" echo=true >}}
+
+{{< embed "C:/Users/grego/Documents/ML/Course_4/06 Nonlinear classifiers.ipynb" echo=true >}}
+
+{{< embed "C:/Users/grego/Documents/ML/Course_4/07 Dense networks.ipynb" echo=true >}}
+
+{{< embed "C:/Users/grego/Documents/ML/Course_4/08 Convnets.ipynb" echo=true >}}
+
+{{< embed "C:/Users/grego/Documents/ML/Course_4/09 Results.ipynb" echo=true >}}

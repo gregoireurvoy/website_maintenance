@@ -1,0 +1,32 @@
+---
+title: "Grégoire Urvoy, Msc - Research & Teaching Assistant "
+---
+
+<img src="images/photo_cv.jpg" style="margin-right: 1.5rem" align="left" height="auto" width="300"/>
+
+<p>
+
+I am Grégoire Urvoy and I am research and teaching assistant at HEG Geneva. This site, developed with R, aims to share my work, professional and personal projects.
+
+In a few words, I studied economics and finance at HEC Lausanne where I was research assistant for many years (in macro economics and marketing classes). I also hold a <a href="https://www.epfl.ch/education/continuing-education/applied-data-science-machine-learning/" target="_blank">certificate of open studies in applied data science from EPFL</a>. I am particularly interested in how to use applied statistical models in the fields of economics, sports, new technologies and video games. I mainly work with R and Python.
+
+My competences in data science are mainly data collection, working with API, web scraping, data cleaning, analysis with statistics and machine learning, data visualization. I really like to get insights from data and the story telling around it.
+
+In my life, I do triathlons, running and cycling. I love watching football and sport in general.
+
+</p>
+
+<br />
+
+For more information, you can download my CV here:
+
+```{r, echo=FALSE, warning=FALSE}
+library(downloadthis)
+
+download_file(
+  path = "pdf/CV_GregoireUrvoy.pdf",
+  output_name = "Download CV",
+  button_label = "Download CV",
+  button_type = "default"
+)
+```

@@ -1,0 +1,24 @@
+---
+format:
+  html:
+    toc: true
+    toc-location: left
+---
+
+# Estimating market capitalisation of companies using Machine Learning models
+
+<blockquote> One of the main challenges of asset management in finance is to develop models that can predict stock prices, or in other words, the market capitalization of a company (numbers of stocks x stock prices). Market capitalisation can be seen as the overall value of the company. Usually, investors use a method called DCF (Discounted Cash Flow) to predict the value of the company. In a few words, this method consists in predicting the future revenues of the company and discount it to get the present value of the company. This method is very demanding and need many assumptions concerning the company, the different rates you want to use, etc. </blockquote>
+
+The goal of my project is to try to develop a machine learning model to **estimate the current market capitalisation using only the latest statistics of the company**. 
+
+
+
+{{< embed C:/Users/grego/Documents/ML/Capstone/FinalProject/1_data_collection.ipynb echo=TRUE >}}
+
+{{< embed C:/Users/grego/Documents/ML/Capstone/FinalProject/2_data_preparation.ipynb echo=TRUE >}}
+
+{{< embed C:/Users/grego/Documents/ML/Capstone/FinalProject/3_EDA.ipynb echo=TRUE >}}
+
+{{< embed C:/Users/grego/Documents/ML/Capstone/FinalProject/4_ML_models.ipynb echo=TRUE >}}
+
+{{< embed C:/Users/grego/Documents/ML/Capstone/FinalProject/5_results.ipynb echo=TRUE >}}

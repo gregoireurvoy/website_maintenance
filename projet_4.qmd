@@ -1,0 +1,14 @@
+---
+format:
+  html:
+    toc: true
+    toc-location: left
+---
+
+# Open food facts dataset: simple analysis 
+
+The goal of this project was simply to clean and put the data in the best possible shape for analysis.
+
+The dataset contains food products listing the ingredients and nutritional facts of more than 300'000 foods from over 150 countries in the world.
+
+{{< embed C:/Users/grego/Documents/ML/Course_2/09_Course_Project/Projet2_to_R.ipynb echo=true >}}

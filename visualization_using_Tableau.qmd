@@ -1,0 +1,209 @@
+---
+title: "Visualization using Tableau"
+format:
+  html:
+    toc: true
+    toc-location: left
+---
+
+# 1. Geographical data
+
+## 1.1. Buble map
+
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/1_earthquakes.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+## 1.2. Choropleth map
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/1_votations.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/1_chomage.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+## 1.3. Other
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/1_airbnb.png" align="middle" height="auto" width="900"/>
+:::
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/1_airbnb_night.png" align="middle" height="auto" width="780"/>
+:::
+
+# 2. Trends over time
+
+## 2.1. Bump chart
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/2_rugby.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+## 2.2. Lolipop chart
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/2_medias.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/2_pib.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/2_esperance.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+## 2.3. Area chart
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/2_pop.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+# 3. Comparisons and rankings
+
+## 3.1. Simple bar charts
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/3_salaire.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/3_return.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/3_chomage.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+## 3.2. Stacked bar charts
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/3_salaire_stacked.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+## 3.3. Lolipop chart
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/3_100m.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+# 4. Tables and parts of a set
+
+## 4.1. Waffle chart
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/4_internet.png" align="middle" height="auto" width="700"/>
+:::
+
+<br>
+
+
+## 4.2. Tables
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/4_ESG.png" align="middle" height="auto" width="700"/>
+:::
+
+<br>
+
+## 4.3. Treemap
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/4_sport.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+# 5. Relationship between two variables
+
+## 5.1. Scatter plots
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/5_student.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/5_rel.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+# 6. Working with frequencies
+
+## 6.1. Boxplots
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/6_temperature.png" align="middle" height="auto" width="700"/>
+:::
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/6_perception.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
+
+# 7. Other
+
+<br>
+
+::: {style="text-align: center;"}
+<img src="images/Tableau/7_tour.png" align="middle" height="auto" width="900"/>
+:::
+
+<br>
+
