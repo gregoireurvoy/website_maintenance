@@ -1,5 +1,4 @@
 ---
-editor: visual
 execute:
   echo: false
   message: false
@@ -10,10 +9,11 @@ format:
     grid:
       body-width: 900px
     toc: FALSE
+css: custom.css
 ---
 
-```{=html}
 <style>
+
     .intro_1 {
     margin: 0px -250px 0px -50px;
     }
@@ -27,32 +27,32 @@ format:
 }
 
 </style>
-```
+
 <img src="images/logo.jpg" class="intro_1" align="left" height="200" width="auto"/> <img src="images/logo.jpg" class="intro_2" style="transform: rotatey(180deg)" align="right" height="200" width="auto"/>
 
-<p style="text-align:center; font-size:66px; color:#432060">
+<div style="text-align:center; font-size:66px; color:#432060">
 
 Premier league
 
-</p>
+</div>
 
-<p style="text-align:center; font-size:40px; color:#432060">
+<div style="text-align:center; font-size:40px; color:#432060">
 
 Simply the best
 
-</p>
+</div>
 
 <br> <br>
 
-::: intro
+<div class="intro">
 Envision a grand football spectacle known as the Premier League -- a distinguished gathering of 20 premier teams, akin to formidable titans engaged in epic on-field duels. Its inaugural chapter unfolded in 1992, swiftly evolving into a global phenomenon that commands fervent admiration. The stadiums, hallowed grounds of sporting prowess, echo with the cacophony of ardent fans, while the players, drawn from diverse corners of the globe, infuse the league with an international flair. Beyond mere competition, this is a vibrant tapestry where each goal and remarkable save etches a compelling narrative into the annals of footballing history. Join this transcendent odyssey into the heart of the Premier League, where the beautiful game metamorphoses into a canvas upon which legends are painted. Simply the best.
-:::
+</div>
 
-<p style="text-align:left; font-size:40px; color:#432060">
+<div style="text-align:left; font-size:40px; color:#432060">
 
 Current Table
 
-</p>
+</div>
 
 ```{r}
 library(tidyverse)
@@ -106,11 +106,11 @@ print(kable(dataset_ranking, format="html") %>%
 
 <br>
 
-<p style="text-align:left; font-size:40px; color:#432060">
+<div style="text-align:left; font-size:40px; color:#432060">
 
 Season 2023-2024
 
-</p>
+</div>
 
 ```{r}
 uk <- read_sf("data/NUTS1_Jan_2018_UGCB_in_the_UK.shp")
@@ -161,11 +161,11 @@ girafe(ggobj = plot_grid(gg_map_2,NULL, ncol=2, rel_widths = c(4, 2)),
 
 <br>
 
-<p style="text-align:left; font-size:40px; color:#432060">
+<div style="text-align:left; font-size:40px; color:#432060">
 
 All for the show!
 
-</p>
+</div>
 
 ```{r}
 
@@ -224,11 +224,11 @@ girafe(code = print((p1 + p2) / (p3 + p4)), width_svg = 9, height_svg = 4,
 
 ```
 
-<p style="text-align:left; font-size:40px; color:#432060">
+<div style="text-align:left; font-size:40px; color:#432060">
 
 Always more money
 
-</p>
+</div>
 
 ```{r}
 dataset_right <- data.frame(date = rep(c("92-97","97-01","01-04","04-07","07-10","10-13", "13-16", "16-19","19-22","22-25"),2),
@@ -290,16 +290,17 @@ inter
 
 <br>
 
-<p style="text-align:left; font-size:40px; color:#432060">
+<div style="text-align:left; font-size:40px; color:#432060">
 
 A Few Iconic Players
 
-</p>
+</div>
 
 <br>
 
-```{=html}
+
 <style>
+
     .player {
       border-radius: 50%; 
       border: 3px solid #432060; 
@@ -314,75 +315,75 @@ A Few Iconic Players
       object-fit: cover;
     }
 </style>
-```
+
 <a href="https://www.youtube.com/watch?v=vQxu1_FoHL4&ab_channel=PremierLeague" target="_blank"> <img src="https://resources.premierleague.com/premierleague/photos/players/250x250/p13017.png" alt="Encircled Image" class="player" align="left"/></a>
 
-::: {style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:28px; color:#432060"}
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:28px; color:#432060">
 Wayne <b>ROONEY</b>
-:::
+</div>
 
-::: {style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:17px"}
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:17px">
 England <img src="https://resources.premierleague.com/premierleague/flags/GB-ENG.png" class="logo"/>, Everton <img src="https://resources.premierleague.com/premierleague/badges/50/t11.png" class="logo"/>, Manchester United <img src="https://resources.premierleague.com/premierleague/badges/50/t1.png" class="logo"/> <br> Appareances: 491 <br> Goals: 208 <br> Assists: 103 <br> 5 x Premier League champions <br> 1 x Player of the season
-:::
+</div>
 
 <br>
 
 <a href="https://www.youtube.com/watch?v=K-u0gOjKS4g&ab_channel=PremierLeague" target="_blank"> <img src="https://resources.premierleague.com/premierleague/photos/players/250x250/p1814.png" alt="Encircled Image" class="player" align="right"/></a>
 
-::: {style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:28px; color:#432060"}
+<div style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:28px; color:#432060">
 Steven <b>GERRARD</b>
-:::
+</div>
 
-::: {style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:17px"}
+<div style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:17px">
 England <img src="https://resources.premierleague.com/premierleague/flags/GB-ENG.png" class="logo"/>, Liverpool <img src="https://resources.premierleague.com/premierleague/badges/50/t14.png" class="logo"/> <br> Appareances: 504 <br> Goals: 120 <br> Assists: 92 <br> Liverpool legend <br> 8 x Premier League Team of the year
-:::
+</div>
 
 <br>
 
 <a href="https://www.youtube.com/watch?v=rZphx3ofoWQ&ab_channel=ManchesterUtd" target="_blank"> <img src="https://resources.premierleague.com/premierleague/photos/players/250x250/p3.png" alt="Encircled Image" class="player" align="left"/></a>
 
-::: {style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:28px; color:#432060"}
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:28px; color:#432060">
 Ryan <b>GIGGS</b>
-:::
+</div>
 
-::: {style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:17px"}
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:17px">
 Wales <img src="https://resources.premierleague.com/premierleague/flags/GB-WLS.png" class="logo"/>, Manchester United <img src="https://resources.premierleague.com/premierleague/badges/50/t1.png" class="logo"/> <br> Appareances: 632 <br> Goals: 109 <br> Assists: 162 <br> 13 x Premier League Champion <br> Most appareances for a Manchester United player
-:::
+</div>
 
 <br>
 
 <a href="https://www.youtube.com/watch?v=MIc-ogQYJ6Q&ab_channel=PremierLeague" target="_blank"> <img src="https://resources.premierleague.com/premierleague/photos/players/250x250/p1.png" alt="Encircled Image" class="player" align="right"/></a>
 
-::: {style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:28px; color:#432060"}
+<div style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:28px; color:#432060">
 Alan <b>SHEARER</b>
-:::
+</div>
 
-::: {style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:17px"}
+<div style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:17px">
 England <img src="https://resources.premierleague.com/premierleague/flags/GB-ENG.png" class="logo"/>, Blackburn Rovers <img src="https://resources.premierleague.com/premierleague/badges/50/t5.png" class="logo"/>, Newcastle United <img src="https://resources.premierleague.com/premierleague/badges/50/t4.png" class="logo"/> <br> Appareances: 441 <br> Goals: 260 <br> 3 x Golden boot <br> 1 x Premier League champions <br> Premier League's All time record goalscorer
-:::
+</div>
 
 <br>
 
 <a href="https://www.youtube.com/watch?v=pP8r4yDPnyE&ab_channel=PremierLeague" target="_blank"> <img src="https://resources.premierleague.com/premierleague/photos/players/250x250/p223094.png" alt="Encircled Image" class="player" align="left"/></a>
 
-::: {style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:28px; color:#432060"}
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:28px; color:#432060">
 Erlind <b>HAALAND</b>
-:::
+</div>
 
-::: {style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:17px"}
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:17px">
 Norway <img src="https://resources.premierleague.com/premierleague/flags/NO.png" class="logo"/>, Manchester city <img src="https://resources.premierleague.com/premierleague/badges/50/t43.png" class="logo"/> <br> Appareances: 47 <br> Goals: 49 <br> Season 22-23: Premier League Champion, Young Player of the Season, Player of the Season, Golden Boot <br> Most goals scored by a player in a single season
-:::
+</div>
 
 <br>
 
-<p style="text-align:left; font-size:40px; color:#432060">
+<div style="text-align:left; font-size:40px; color:#432060">
 
 Fun facts about the Premier League
 
-</p>
+</div>
 
-```{=html}
 <style>
+
     .big-number_1 {
       font-weight: bold;
       float: left;
@@ -398,98 +399,98 @@ Fun facts about the Premier League
     }
 
 </style>
-```
+
 [38 ]{.big-number_1 style="font-size:72px; color:#432060; font-family: Garamond, serif"}
 
-::: {style="text-align:left"}
+<div style="text-align:left">
 The Invincibles refers to the 2003-2004 Arsenal football team, that went unbeaten throughout the entire Premier League season, a remarkable achievement in modern English football history. They secured the league title with 26 wins and 12 draws, remaining undefeated in all <b>38 matches</b>.
-:::
+</div>
 
 <br>
 
 [6 ]{.big-number_2 style="font-size:72px; color:#432060; font-family: Garamond, serif"}
 
-::: {style="text-align:right"}
+<div style="text-align:right">
 Arsenal, Chelsea, Everton, Liverpool, Manchester United, and Tottenham Hotspur are the indomitable <b>six</b>, steadfast against the specter of relegation in the rich history of the Premier League.
-:::
+</div>
 
 <br>
 
 [90+ ]{.big-number_1 style="font-size:72px; color:#432060; font-family: Garamond, serif"}
 
-::: {style="text-align:left"}
+<div style="text-align:left">
 We say 'Fergie time' in reference to Sir Alex Ferguson, the legendary manager of Manchester United, because his teams were known for scoring crucial goals during <b>added time</b>, leading to dramatic late victories, creating a perception that the match clock was extended in their favor.
-:::
+</div>
 
 <br>
 
-[11]{.big-number_2 style="font-size:72px; color:#432060; font-family: Garamond, serif"}
+[11]{.big-number_2 style="font-size:72px; color:#432060; font-family: Garamond, serif">
 
-::: {style="text-align:right"}
+<div style="text-align:right">
 While being the all-time top scorer of the Premier League, Alan Shearer has also the most missed penalties in the league (<b>11</b>).
-:::
+</div>
 
 <br>
 
-<p style="text-align:left; font-size:40px; color:#432060">
+<div style="text-align:left; font-size:40px; color:#432060">
 
 A Few Iconic Managers
 
-</p>
+</div>
 
 <br>
 
 <img src="https://resources.premierleague.com/premierleague/photos/players/250x250/man58.png" alt="Encircled Image" class="player" align="left"/>
 
-::: {style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:28px; color:#432060"}
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:28px; color:#432060">
 Sir Alex <b>FERGUSON</b>
-:::
+</div>
 
-::: {style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:17px"}
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:17px">
 Scotland <img src="https://resources.premierleague.com/premierleague/flags/GB-SCT.png" class="logo"/>, Manchester United <img src="https://resources.premierleague.com/premierleague/badges/50/t1.png" class="logo"/> <br> Matchs: 810 <br> Wins: 528 (65%) <br> 27 x Manager of the months <br> 13 x Premier League champions <br> 11 x Manager of the season
-:::
+</div>
 
 <br>
 
 <img src="https://resources.premierleague.com/premierleague/photos/players/250x250/man134.png" alt="Encircled Image" class="player" align="right"/>
 
-::: {style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:28px; color:#432060"}
+<div style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:28px; color:#432060">
 Jose <b>MOURINHO</b>
-:::
+</div>
 
-::: {style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:17px"}
+<div style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:17px">
 Portugal <img src="https://resources.premierleague.com/premierleague/flags/PT.png" class="logo"/>, Chelsea <img src="https://resources.premierleague.com/premierleague/badges/50/t11.png" class="logo"/>, Manchester United <img src="https://resources.premierleague.com/premierleague/badges/50/t1.png" class="logo"/>, Tottenham Hotspur <img src="https://resources.premierleague.com/premierleague/badges/50/t6.png" class="logo"/> <br> Matchs: 363 <br> Wins: 217 (60%) <br> Goals for: 625 (1.7 per game) <br> 3 x Premier League champions <br> 3 x Manager of the season
-:::
+</div>
 
 <br>
 
 <img src="https://resources.premierleague.com/premierleague/photos/players/250x250/man51.png" alt="Encircled Image" class="player" align="left"/>
 
-::: {style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:28px; color:#432060"}
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:28px; color:#432060">
 Arsene <b>WENGER</b>
-:::
+</div>
 
-::: {style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:17px"}
+<div style="text-align:left;  margin-left: 120px; padding-left: 120px; font-size:17px">
 France <img src="https://resources.premierleague.com/premierleague/flags/FR.png" class="logo"/>, Arsenal <img src="https://resources.premierleague.com/premierleague/badges/20/t3.png" class="logo"/> <br> Matchs: 828 (record) <br> Wins: 476 (57%) <br> Goals for: 1561 (1.9 per game) <br> 3 x Premier League champions <br> 3 x Manager of the season
-:::
+</div>
 
 <br>
 
 <img src="https://resources.premierleague.com/premierleague/photos/players/250x250/man37974.png" alt="Encircled Image" class="player" align="right"/>
 
-::: {style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:28px; color:#432060"}
+<div style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:28px; color:#432060">
 Pep <b>GUARDIOLA</b>
-:::
+</div>
 
-::: {style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:17px"}
+<div style="text-align:right;  margin-right: 120px; padding-right: 120px; font-size:17px">
 Spain <img src="https://resources.premierleague.com/premierleague/flags/ES.png" class="logo"/>, Manchester City <img src="https://resources.premierleague.com/premierleague/badges/20/t43.png" class="logo"/> <br> Matchs: 278 <br> Wins: 206 (74%) <br> Average possession percentage: 68% <br> 5 x Premier League champions <br> 4 x Manager of the season
-:::
+</div>
 
-<p style="text-align:left; font-size:40px; color:#432060">
+<div style="text-align:left; font-size:40px; color:#432060">
 
 My Premier League XI
 
-</p>
+</div>
 
 <br>
 
@@ -518,17 +519,18 @@ girafe(ggobj = plot_grid(NULL, p,NULL, ncol=3, rel_widths = c(1, 3, 1)),
 
 <br> <br> <br>
 
-```{=html}
-<p style="text-align:center; font-size:46px; color:#432060; font-family:Serif
-">
-```
+
+<div style="text-align:center; font-size:46px; color:#432060; font-family:Serif">
+
 <i>"Everybody wants the Hollywood glamour of the Premier League."</i>
 
-</p>
+</div>
 
-```{=html}
-<p style="text-align:center; font-size:30px; color:#432060"; font-family:Serif><i>Ole Gunnar Solskjaer </i></p>
-```
-<br> <br> ---
+
+<div style="text-align:center; font-size:30px; color:#432060"; font-family:Serif><i>Ole Gunnar Solskjaer </i></div>
+
+<br> <br> 
+
+---
 
 https://www.premierleague.com/home <br> https://fbref.com/ <br> https://theathletic.com/4240951/2023/08/25/premier-league-tv-rights-how-work-cost/ <br> https://www.forbes.com/lists/soccer-valuations/?sh=14a8e816198b <br>
