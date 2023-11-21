@@ -44,8 +44,11 @@ website:
         
       - text: "Tutorials"
         menu: 
+          - text: "How to plot maps with R?"
+            href: t_maps.qmd
           - text: "How to animate your plots with R? (in progress)"
             href: t_animated.qmd
+
       - icon: linkedin
         href: https://www.linkedin.com/in/gr%C3%A9goire-urvoy-456347a8/
         aria-label: linkedin
