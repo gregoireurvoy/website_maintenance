@@ -77,7 +77,6 @@ data <- gapminder %>%
   filter(ranking <=15) %>%
   mutate(gdpPercap = round(gdpPercap,0))
 
-# 5. Créer l'animation avec une transition_states
 plot_2 <- ggplot(data) +
   geom_col(aes(ranking, gdpPercap, fill = country)) +
   scale_fill_manual(values = c("Switzerland" = "red"), na.value = "grey85") +

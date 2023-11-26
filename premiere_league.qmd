@@ -15,11 +15,11 @@ css: custom.css
 <style>
 
     .intro_1 {
-    margin: 0px -250px 0px -50px;
+    margin: 0px -250px 0px -150px;
     }
     
      .intro_2 {
-    margin: 0px -50px 0px -250px;
+    margin: 0px -150px 0px -250px;
     }
     
     .intro {
@@ -30,7 +30,7 @@ css: custom.css
 
 <img src="images/logo.jpg" class="intro_1" align="left" height="200" width="auto"/> <img src="images/logo.jpg" class="intro_2" style="transform: rotatey(180deg)" align="right" height="200" width="auto"/>
 
-<div style="text-align:center; font-size:66px; color:#432060">
+<div style="text-align:center; font-size:60px; color:#432060">
 
 Premier league
 
@@ -424,7 +424,7 @@ We say 'Fergie time' in reference to Sir Alex Ferguson, the legendary manager of
 
 <br>
 
-[11]{.big-number_2 style="font-size:72px; color:#432060; font-family: Garamond, serif">
+[11]{.big-number_2 style="font-size:72px; color:#432060; font-family: Garamond, serif"}
 
 <div style="text-align:right">
 While being the all-time top scorer of the Premier League, Alan Shearer has also the most missed penalties in the league (<b>11</b>).
@@ -495,10 +495,6 @@ My Premier League XI
 <br>
 
 ```{r}
-# add interactive raster annotation to a ggplot -------
-
-# Generate data
-
 dataset <- data.frame(position_x = c(2.5,1,2,3,4,1.5,2.5,3.5,1.5,2.5,3.5), position_y = c(0.3,1,1,1,1,2,1.9,2,3,3.2,3), pic = c("images/cech.png","images/cole.png","images/van.png","images/ferdinand.png","images/arnold.png","images/lampard.png","images/kante.png","images/debruyne.png","images/ronaldo.png","images/kane.png","images/henry.png"), legend = c("Petr Čech", "Ashley Cole", "Virgil van Dijk", "Rio Ferdinand", "Trent Alexander-Arnold", "Frank Lampard", "N'Golo Kanté", "Kevin De Bruyne", "Cristiano Ronaldo", "Harry Kane", "Thierry Henry"))
 
 p <- ggplot(dataset, aes(position_x, position_y)) +

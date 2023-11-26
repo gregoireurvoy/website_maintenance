@@ -9,6 +9,7 @@ format:
     grid:
       body-width: 900px
     toc: FALSE
+css: custom.css
 ---
 
 
@@ -49,11 +50,298 @@ Blue or Red?
 Enter the realm of football's fierce symphony, where the streets of Manchester echo with the thunderous beats of rivalry -- the storied clash between Manchester City and Manchester United. This is no ordinary derby; it's a spectacle that transcends the boundaries of sport, a saga of passion, pride, and undying loyalty. Since the inception of this epic duel, the two giants, City and United, have woven a narrative of contention and glory that resonates far beyond the city's limits. The rivalry encapsulates the spirit of Manchester itself, where blue and red stand as vibrant symbols in a ceaseless struggle for supremacy. From the hallowed Old Trafford to the Etihad Stadium, each encounter becomes a chapter in the folklore of the Manchester Derby, where the roar of the crowd and the clash of titans create a footballing spectacle that captures the essence of competition at its most exhilarating. Join us as we delve into the history of the Manchester Derby -- a timeless clash that resounds with the beating heart and soul of English football. Manchester, Blue or Red?
 </div>
 
-IN PROGRESS
-
 ```{r}
 library(tidyverse)
 library(ggiraph)
 library(sf)
 library(cowplot)
+library(ggimage)
+library(gganimate)
+library(stringr)
 ```
+<div style="text-align:left; font-size:40px; color:black">
+
+Greater Manchester map by football fans
+
+</div>
+```{r}
+manchester_ward <- st_read("data/2023_06_27_Final_recommendations_North_West.shp", quiet = TRUE)
+```
+
+```{r}
+color <- c("#df1b1f","#df1b1f","#75a8de","#75a8de","#75a8de","#df1b1f","#75a8de","#75a8de",
+  "#df1b1f","#75a8de","#75a8de","#df1b1f","#df1b1f","#75a8de","#75a8de","#df1b1f","#df1b1f",
+  "#df1b1f","#75a8de","#75a8de","#df1b1f","#75a8de","#df1b1f","#75a8de","#75a8de","#75a8de","#75a8de")
+
+manchester_ward <- manchester_ward %>% filter(Sub.region == "Greater Manchester") %>% mutate(fill_color = color)
+
+d_points <- data.frame(lat = c(53.483158955390024, 53.46308988695936), 
+                       long  = c(-2.200286248272314,  -2.291846526325327)) %>% 
+  st_as_sf(coords = c("long", "lat"), crs = 4326)
+
+stadium <- c("Etihad Stadium", "Old Trafford" )
+link <- c( "https://www.mancity.com/etihad-stadium", "https://www.manutd.com/en/visit-old-trafford")
+images <- c("<iframe width=600 height=400 frameBorder='0' src='https://www.thisisanfield.com/wp-content/uploads/P2022-04-10-Man_City_Liverpool-4-600x400.jpg'></iframe>",
+            "<iframe width=600 height=400 frameBorder='0' src='https://i.pinimg.com/1200x/a7/91/b1/a791b1c8d40404b91bc258f645e2fc89.jpg'></iframe>")
+
+gg_map_2 <- ggplot() +
+  geom_sf_interactive( data = manchester_ward, aes(data_id = Constituen , tooltip = Constituen, fill = fill_color)  ) +
+  geom_sf_interactive(data = d_points, aes(tooltip = images, data_id = stadium, onclick = sprintf('window.open("%s")', link)), color = c("#3D629A", "#831E1E"), size = 2) + 
+  scale_fill_manual_interactive(values = c("#75a8de", "#df1b1f"), guide = "none") +
+  theme_void()
+
+
+girafe( code = print(gg_map_2), options = list(opts_hover(css = ""),
+                                               opts_hover_inv(css = "fill:gray;opacity:0.3"),
+                                               opts_tooltip(offx = 30, css = "background:;text-align:center")))
+
+
+```
+
+<div style="text-align:left; font-size:40px; color:black">
+Records: advantage Reds
+</div>
+
+```{r}
+
+
+library(ggtext)
+
+data_palmares <- data.frame( palmares = rep(c("Champions League", "Premier League", "FA Cup", "EFL Cup", "Community Shield"),2), club = c( rep("Manchester United",5),rep("Manchester City",5)), values = c(3,20,12,6,21,1,9,7,8,6))
+
+data_palmares$palmares <- factor(data_palmares$palmares, levels = rev(unique(data_palmares$palmares)))
+data_palmares$club <- factor(data_palmares$club, levels = unique(data_palmares$club))
+
+
+p <- ggplot(data_palmares, ) + 
+    geom_bar_interactive(aes(fill=club, y=values , x=palmares, data_id = club), position="fill", stat="identity", width = 0.5) +
+  geom_text_interactive(aes( y = values , x = palmares, label = values, group = club), position = position_fill(vjust=0.5), colour="white") + 
+  scale_fill_manual( values = c("#df1b1f", "#75a8de"), guide = "none") +
+  coord_flip() +
+  theme_minimal() + 
+  theme(panel.background = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_blank(),
+        axis.title = element_blank()) +
+    geom_textbox(x= 5.4, y= 0.5, aes(label = "Champions league"  ), fill = "transparent", color = "grey45", box.colour = "transparent", halign = 0.5) +
+  geom_textbox(y= 0.5, x= 4.4, aes(label = "Premier League"  ), fill = "transparent", color = "grey45",
+               box.colour = "transparent",
+               halign = 0.5) +
+  geom_textbox(y= 0.5, x= 3.4, aes(label = "FA Cup"  ), fill = "transparent", color = "grey45", box.colour = "transparent",
+               halign = 0.5) +
+  geom_textbox(y= 0.5, x= 2.4, aes(label = "EFL Cup"  ), fill = "transparent", color = "grey45", box.colour = "transparent",
+               halign = 0.5) +
+  geom_textbox(y= 0.5, x= 1.4, aes(label = "Community Shield"  ), fill = "transparent", color = "grey45", box.colour = "transparent",
+               halign = 0.5)
+
+
+girafe( ggobj = p,options = list(opts_hover(css = ""),
+                                               opts_hover_inv(css = "fill:gray;opacity:0.3"),
+                                               opts_tooltip(offx = 30, css = "background:;text-align:center")), width_svg = 8)
+
+
+```
+
+
+```{r}
+
+dataset <- read_csv("data/result.csv")
+
+dataset$year <- str_replace_all(dataset$year, c("2005/6" = "2005/2006", "2004/5" = "2004/2005", "2003/4" = "2003/2004", "2002/3" = "2002/2003" ))
+
+dataset %>% 
+  slice(1:1095) %>%
+ggplot() + 
+  geom_col(aes(Pos, Pts, fill = Team)) + 
+  scale_fill_manual(values = c("Manchester United" = "#df1b1f", "Manchester City" = "#75a8de"), na.value = "grey85") +
+  labs(title = "Premier League tables from 1963 to 2023") +
+  geom_text(aes(Pos, Pts, label = as.character(Pts)), color = "grey25", hjust=-0.1) +
+  geom_text(aes(Pos, y=0 , label = Team), hjust=1.1) + 
+  geom_text(aes(x=20, y=60, hjust = 0, label = as.factor(year)),  col = "grey65", size = 11) +
+  coord_flip(clip = "off") + 
+  scale_x_reverse() +
+  theme_minimal() + 
+  theme(
+    panel.grid = element_blank(), 
+    legend.position = "none",
+    axis.ticks.y = element_blank(),
+    axis.title.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    plot.title = element_text(size = 16),
+    plot.margin = margin(0.1, 0.1, 0.1, 0.2, "npc")
+  ) +
+  transition_states(year, transition_length = 2, state_length = 5) +
+  enter_fade() +
+  exit_fade() + 
+  ease_aes('quadratic-in-out') 
+
+animate( plot = last_plot(), fps = 30, duration = 60, rewind = FALSE)
+```
+
+<div style="text-align:left; font-size:40px; color:black">
+Players that have played for both sides
+</div>
+
+<br>
+
+
+<style>
+
+    .player {
+      border-radius: 50%; 
+      border-left: 4px solid #75a8de; 
+      border-right: 4px solid #df1b1f; 
+      width: 200px; 
+      height: 200px; 
+      object-fit: cover;
+    }
+    
+    .logo {
+      width: 30px; 
+      height: 30px; 
+      object-fit: cover;
+    }
+    
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center; /* Center the content horizontally within the container */
+}
+
+.left-text, .right-text {
+  flex: 1;
+}
+
+.centered-image img {
+  display: inline-block; /* Remove extra space below inline image */
+}
+</style>
+
+<div style="text-align:center;font-size:28px; color:gray">
+Carlos <b>TEVEZ</b>
+</div>
+
+<div class="container">
+  <div class="left-text"> <img src="https://resources.premierleague.com/premierleague/badges/50/t43.png" class="logo"/> <br>
+                        1 x Premier League Champion <br>
+                        1 x FA Cup <br>
+                        1 x Community shield </div>
+ 
+<div style="text-align:center;
+<a href="https://www.youtube.com/watch?v=uQRk_Bwxqso&ab_channel=ManCity" target="_blank"> <img src="https://resources.premierleague.com/premierleague/photos/players/250x250/p20312.png" alt="Encircled Image" class="player" align="center"/></a>
+
+  </div>
+  <div class="right-text">  <img src="https://resources.premierleague.com/premierleague/badges/50/t1.png" class="logo"/> <br> 1 x Champions League Champion <br>
+                            2 x Premier League Champion <br>
+                            1 x Community Shield <br>
+                            1 x FIFA Club World Cup 
+</div>
+</div>
+
+<br>
+
+<div style="text-align:center;font-size:28px; color:gray">
+Peter <b>SCHMEICHEL</b>
+</div>
+
+<div class="container">
+  <div class="left-text"> <img src="https://resources.premierleague.com/premierleague/badges/50/t43.png" class="logo"/> <br>
+                        31 appearances <br>
+                        Inducted into English Hall of Fame in 2003  </div>
+ 
+<div style="text-align:center;
+<a href="https://www.youtube.com/watch?v=ZxX3MyApITQ&ab_channel=ManchesterUnited" target="_blank"> <img src="https://resources.premierleague.com/premierleague/photos/players/250x250/p3952.png" alt="Encircled Image" class="player" align="center"/></a>
+
+  </div>
+  <div class="right-text">  <img src="https://resources.premierleague.com/premierleague/badges/50/t1.png" class="logo"/> <br> 1 x Champions League Champion <br>
+                            5 x Premier League Champion <br>
+                            3 x FA <br>
+                            1 x UEFA Supercup 
+</div>
+</div>
+
+<br>
+
+<div style="text-align:center;font-size:28px; color:gray">
+Brian <b>KIDD</b>
+</div>
+
+<div class="container">
+  <div class="left-text"> <img src="https://resources.premierleague.com/premierleague/badges/50/t43.png" class="logo"/> <br>
+                        98 appearances <br>
+                        44 goals <br>
+                        Manager </div>
+ 
+<div style="text-align:center;
+<a href="https://www.youtube.com/watch?v=ZxX3MyApITQ&ab_channel=ManchesterUnited" target="_blank"><img src="https://www.arsenal.com/sites/default/files/styles/large_16x9/public/gun__1219311992_kidd_brian.jpg?auto=webp&itok=dxlb_DB7" alt="Encircled Image" class="player" align="center"/></a>
+
+  </div>
+  <div class="right-text">  <img src="https://resources.premierleague.com/premierleague/badges/50/t1.png" class="logo"/> <br> 203	appearances <br>
+                           52 goals <br>
+                            1 x European Cup <br>
+                            1 x FA Charity Shield
+</div>
+</div>
+
+<br>
+
+Other players:  <i>Peter Barnes, Peter Beardsley, Andy Cole, Terry Cooke, Wyn Davies, John Gidman, Owen Hargreaves, Andrei Kanchelskis, Denis Law, Sammy McIlroy, Mark Robins </i>
+
+<br>
+
+<div style="text-align:left; font-size:40px; color:black">
+One memorable derby during last decade
+</div>
+
+<iframe width="900" height="506" src="https://www.youtube.com/embed/IkaclqsQFh4" title="HIGHLIGHTS | HAALAND &amp; FODEN HAT-TRICKS IN THE DERBY | Man City 6-3 Man United | Premier League" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+<br>
+
+<div style="text-align:left; font-size:40px; color:black">
+My current Manchester XI
+</div>
+
+<br>
+
+```{r}
+# add interactive raster annotation to a ggplot -------
+
+# Generate data
+
+dataset <- data.frame(position_x = c(2.5,1,2,3,4,1.5,2.5,3.5,1.5,2.5,3.5), position_y = c(0.3,1,1,1,1,2,1.9,2,3,3.2,3), pic = c("images/ederson.png","images/shaw.png","images/dias.png", "images/varane.png","images/walker.png","images/fernandes.png","images/rodri.png","images/debruyne.png","images/rashford.png","images/haaland.png","images/Silva.png"), legend = c("Ederson", "Luke Shaw", "Ruben Dias", "Raphaël Varane", "Kyle Walker", "Bruno Ferndandes", "Rodri", "Kevin De Bruyne", "Marcus Rashford", "Erling Haaland", "Bernardo Silva"))
+
+p <- ggplot(dataset, aes(position_x, position_y)) +
+  geom_point() +
+  geom_image( aes(image = pic), size= 0.2) +
+  xlim(c(0.7,4.3)) +
+  ylim(c(0.2,3.4))+
+  geom_point_interactive( alpha= 0, size = 20, aes(tooltip = legend)) + 
+  theme_void() +
+  theme(panel.background = element_rect(color= "grey", fill ="#F8FFF6"))
+
+girafe(ggobj = plot_grid(NULL, p,NULL, ncol=3, rel_widths = c(1, 3, 1)), 
+       width_svg = 10, height_svg = 6,
+       options = list(opts_tooltip( css="background:#F8FFF6")))
+
+
+```
+<br> <br> <br>
+
+
+<div style="text-align:center; font-size:46px; color:gray; font-family:Serif">
+
+<i>"Sometimes you have a noisy neighbour and have to live with it. You can’t do anything about them."</i>
+
+</div>
+
+
+<div style="text-align:center; font-size:30px; color:gray"; font-family:Serif><i>Sir Alex Ferguson </i></div>
+
+<br> <br> 
+  
+---
+https://www.manchestereveningnews.co.uk/sport/football/derby-day-map-shows-parts-15407574
+

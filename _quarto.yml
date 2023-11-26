@@ -17,7 +17,7 @@ website:
             href: visualization_using_Tableau.qmd
           - text: "Visualization using R"
             href: visualization_using_R.qmd
-      - text: "Academic project"
+      - text: "Academic projects"
         menu:
           - text: "Analysis of ESG factors in investment decisionmaking (2019)" 
             href: projet_1.qmd
